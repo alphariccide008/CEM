@@ -36,22 +36,26 @@ a {
     border-left-width: 0;
     border-bottom-width: 0;
     color: #fff;
-    border-color: #31020c;
-    background-color: #31020c;
+    border-color: #16a1cb;
+    background-color: #16a1cb;
     padding: 10px;
     padding-right: 40px;
     padding-left: 40px;
     border-radius: 0px;
 }
 
+.color-mn{
+    color: #16a1cb;
+}
+
 .btn-main:hover {
-    background-color: #31020c;
+    background-color: #16a1cb;
     /* clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%); */
     color: #fff !important;
 }
 
 .section-bg {
-    background: url('/img/bg-2.png') no-repeat;
+    background: url('/img/background.jpg') no-repeat;
     background-size: cover;
     min-height: 700px;
 }
